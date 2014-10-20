@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="windows-1255">
+<title>IDF CONTROL</title>
+</head>
+<body>
+	<form method="get" action="IdfControlServlet"> 
+		Enter Iron Dome ID <br> 
+		<input type="text" name="ironDomeId" /></br>
+		Enter Missile ID to Intercept: <br> 
+		<input type="text" name="missileId" /></br> 
+		<br> 
+		<input type="submit" name="interceptMissile" value="interceptMissile"><br> 
+		<br>
+		<br> 
+		Select Destroyer Type <br> 
+		<input type="radio" name="destroyerType" value="plane">Plane<br>
+		<input type="radio" name="destroyerType" value="ship">Ship<br>
+		<br> 
+		Enter Destroyer ID<br> 
+		<input type="text" name="destroyerId" /></br> 
+		<br> 
+		Enter Launcher ID to Destroy<br> 
+		<input type="text" name="launcherId" /></br> 
+		<br> 		
+		<input type="submit" name="destroyLauncher" value="destroyLauncher" />
+	</form>
+</body>
+</html>
