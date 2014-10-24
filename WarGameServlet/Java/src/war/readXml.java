@@ -32,7 +32,8 @@ public class readXml {
 		    	//Write your own xml path
 			// File("C:/Users/DELL-PC/git/Java_Project/Java/src/war2.xml");
 			File file = new File(
-					"C:/Users/Andrey/Desktop/Java_Project/Java/src/war.xml");
+//					"C:/Users/Andrey/Desktop/Java_Project/Java/src/war.xml");
+			"C:/Users/DELL-PC/git/WarGameServlet/WarGameServlet/Java/src/war3.xml");
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
 			Document doc = dBuilder.parse(file);

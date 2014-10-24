@@ -34,25 +34,26 @@ public class War {
 
 	}
 
-	/**
-	 * For deleting logger files before each run
-	 */
+
 	private void initLogger() {
 		File file = new File("loggerFiles");
-		if (file.exists()) {
-			String[] myFiles;
-			if (file.isDirectory()) {
-				myFiles = file.list();
-				for (int i = 0; i < myFiles.length; i++) {
-					File myFile = new File(file, myFiles[i]);
-					myFile.delete();
-				}
-			}
-		} else {
+//		if (file.exists()) {
+//		  System.out.println("2");
+//			String[] myFiles;
+//			if (file.isDirectory()) {
+//				myFiles = file.list();
+//				for (int i = 0; i < myFiles.length; i++) {
+//					File myFile = new File(file, myFiles[i]);
+//					myFile.delete();
+//				}
+//			}
+//		} else {
+//		  System.out.println("3");
 			file.mkdir();
-		}
+//		}
 
 		try {
+		  
 			theLogger.setUseParentHandlers(false);
 			theLogger.addHandler((new Handler("FullWarLog")));
 		} catch (Exception e) {
@@ -239,6 +240,7 @@ public class War {
 		}
 	}
 
+
 	// Getters and Setters
 	public Queue<Enemy_Launcher> getLaunchers() {
 		return launchers;
@@ -279,4 +281,7 @@ public class War {
 		}
 		return enemyMissile;
 	}
+
+
+
 }

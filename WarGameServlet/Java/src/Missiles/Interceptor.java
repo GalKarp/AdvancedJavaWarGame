@@ -3,6 +3,7 @@ package Missiles;
 import java.util.logging.Level;
 
 import launchers.Iron_Dome;
+import war.IdfControlServlet;
 import war.War;
 
 public class Interceptor extends Thread {
@@ -66,12 +67,12 @@ public class Interceptor extends Thread {
 				// check if missile is live and if he already launched
 				if (missile.alive()
 						&& missile.getMode() == Enemy_Missile.Mode.Launched) {
-					War.theLogger.log(
+				  War.theLogger.log(
 							Level.INFO,
 							" Iron dome #" + father.getDomeId()
 									+ " intercepted missile #"
 									+ missile.getID(), father);
-					War.theLogger.log(
+				  War.theLogger.log(
 							Level.INFO,
 							" Iron dome #" + father.getDomeId()
 									+ " intercepted missile #"
@@ -86,11 +87,11 @@ public class Interceptor extends Thread {
 
 				} else if (missile.alive()
 						&& missile.getMode() == Enemy_Missile.Mode.Launched) {
-					War.theLogger.log(Level.INFO,
+				  War.theLogger.log(Level.INFO,
 							" Iron dome #" + father.getDomeId()
 									+ " failed to intercept missile #"
 									+ missile.getID(), father);
-					War.theLogger.log(
+				  War.theLogger.log(
 							Level.INFO,
 							" Iron dome #" + father.getDomeId()
 									+ " failed to intercept #"

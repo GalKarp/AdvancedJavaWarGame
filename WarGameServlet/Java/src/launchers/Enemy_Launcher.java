@@ -2,7 +2,9 @@ package launchers;
 
 import java.util.LinkedList;
 import java.util.Queue;
+
 import logger.Handler;
+import war.IdfControlServlet;
 import war.War;
 import Missiles.Enemy_Missile;
 
@@ -27,7 +29,7 @@ public class Enemy_Launcher extends Thread {
 		this.id = id;
 		this.isHidden = Boolean.parseBoolean(isHidden);
 		try {
-			War.theLogger.addHandler((new Handler(this.getClass().getName(),
+		  War.theLogger.addHandler((new Handler(this.getClass().getName(),
 					id, this)));
 		} catch (Exception e) {
 

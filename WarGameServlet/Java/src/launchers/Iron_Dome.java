@@ -6,6 +6,7 @@ import java.util.Queue;
 
 import Missiles.Enemy_Missile;
 import Missiles.Interceptor;
+import war.IdfControlServlet;
 import war.War;
 import logger.Handler;
 
@@ -25,7 +26,7 @@ public class Iron_Dome extends Thread {
 	public Iron_Dome(String id) {
 		this.id = id;
 		try {
-			War.theLogger.addHandler((new Handler(this.getClass().getName(),
+		  War.theLogger.addHandler((new Handler(this.getClass().getName(),
 					id, this)));
 		} catch (SecurityException e) {
 			e.printStackTrace();

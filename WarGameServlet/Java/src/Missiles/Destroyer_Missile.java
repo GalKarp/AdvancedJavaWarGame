@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import launchers.Enemy_Launcher;
 import launchers.Launcher_Destroyer;
+import war.IdfControlServlet;
 import war.War;
 
 public class Destroyer_Missile extends Thread {
@@ -57,17 +58,17 @@ public class Destroyer_Missile extends Thread {
     private void destroyLauncher(Enemy_Launcher launcherToDestroy) {
 	synchronized (this) {
 	    if (launcherToDestroy.isHidden()) {
-		War.theLogger.log(
+	      War.theLogger.log(
 			Level.INFO,
 			" " + father.getLauncherType() + "#"
 				+ father.getLauncherId()
 				+ "Failed to destroy launcher "
 				+ launcherToDestroy.getLauncherId(), father);
 	    } else {
-		War.theLogger.log(Level.INFO, " " + father.getLauncherType()
+	      War.theLogger.log(Level.INFO, " " + father.getLauncherType()
 			+ "#" + father.getLauncherId() + " destroyed launcher "
 			+ launcherToDestroy.getLauncherId(), father);
-		War.theLogger.log(Level.INFO, " " + father.getLauncherType()
+	      War.theLogger.log(Level.INFO, " " + father.getLauncherType()
 			+ "#" + father.getLauncherId() + " destroyed launcher "
 			+ launcherToDestroy.getLauncherId(), launcherToDestroy);
 		launcherToDestroy.setIsAlive(false);

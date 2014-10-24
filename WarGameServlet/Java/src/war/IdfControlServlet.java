@@ -2,6 +2,7 @@ package war;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Queue;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,118 +14,116 @@ import Missiles.Enemy_Missile;
 import launchers.Enemy_Launcher;
 import launchers.Iron_Dome;
 import launchers.Launcher_Destroyer;
-import war.War;
 
 @WebServlet(name = "IdfControlServlet", urlPatterns = { "/IdfControlServlet" })
 public class IdfControlServlet extends HttpServlet {
 
-	public static final String LAUNCHER = "launcher";
-	public static final String MISSILE = "missile";
-	public static final int TAKES_TIME_MIN = 1;
-	public static final int TAKES_TIME_MAX = 10;
-	private War war;
-	private static final long serialVersionUID = 1L;
-	private String status;
+  public static final String LAUNCHER = "launcher";
+  public static final String MISSILE = "missile";
+  public static final int TAKES_TIME_MIN = 1;
+  public static final int TAKES_TIME_MAX = 10;
+  private War war;
+  private boolean enterOnce = true;
+  private static final long serialVersionUID = 1L;
+  private String status;
+  private Queue<Enemy_Missile> missiles ; 
+  private Queue<Launcher_Destroyer> destroyers; 
+  private Queue<Iron_Dome> ironDomes; 
+  private Queue<Enemy_Launcher> launchers ;
 
-	@Override
-	public void init() throws ServletException {
-		try {
-			this.war = new War();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		status = "";
 
-		StringBuilder launcherList = new StringBuilder();
-		StringBuilder ironDomeList = new StringBuilder();
-		StringBuilder missileList = new StringBuilder();
-		StringBuilder destroyersList = new StringBuilder();
-		for (Enemy_Launcher launcher : war.getLaunchers()) {
-			launcherList.append("  " + launcher.getLauncherId() + " ");
-		}
-		for (Iron_Dome dome : war.getIronDomes()) {
-			ironDomeList.append("  " + dome.getDomeId() + " ");
-		}
+  protected void doGet(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException {
+    doGetAndPost(request, response);
 
-		for (Enemy_Missile missile : war.getAllMissiles()) {
-			missileList.append("  " + missile.getID() + "  ");
-		}
+  }
 
-		for (Launcher_Destroyer destroyer : war.getWarLauncherDestroyer()) {
-			destroyersList.append("  " + destroyer.getLauncherType() + "#"
-					+ destroyer.getLauncherId() + " ");
-		}
+  protected void doPost(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException {
+    doGetAndPost(request, response);
+  }
 
-		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
+  private void doGetAndPost(HttpServletRequest request,
+      HttpServletResponse response) throws ServletException, IOException  {
 
-		// interceptMissile button was clicked
-		if (request.getParameter("interceptMissile") != null) {
 
-			status = interceptMissile(request.getParameter("ironDomeId"),
-					request.getParameter("missileId"));
+    PrintWriter out = response.getWriter();
+    try {
 
-			out.println("<html>");
-			out.println(status);
-			out.println("<html>");
-		}
-		// destroyLauncher button was clicked
-		else if (request.getParameter("destroyLauncher") != null) {
-			String status = destroyLauncher(request.getParameter("destroyerType"),
-					request.getParameter("destroyerId"),
-					request.getParameter("launcherId"));
+      if(enterOnce){
+        if(request.getParameter("war") == null){             
+          war = new War();    
+          missiles = war.getAllMissiles(); 
+          destroyers = war.getWarLauncherDestroyer(); 
+          ironDomes = war.getIronDomes(); 
+          launchers = war.getLaunchers();
+          enterOnce = false;
 
-			out.println("<html>");
-			out.println(status);
-			out.println("<html>");
+        }
+      }
+      response.setContentType("text/html;charset=UTF-8");
 
-		}
+      // button was clicked
+      if (request.getParameter("B") != null) {
+        String id = request.getParameter("A");
+        war.Create_enemy_launcher(id);
+        out.append("<html> " +  id + " added successfully" + "</html>");
+        out.println("\n<a href=\"/WarGameServlet/WarHtml.html\"> <input type=\"submit\" value=\"Return\"></a>");
+      }
+      else if(request.getParameter("D") != null){
+        String ironDomeiD = request.getParameter("C");
+        war.Create_Iron_Dome(ironDomeiD);
+        out.append("<html> " +  ironDomeiD + " added successfully" + "</html>");
+        out.println("\n<a href=\"/WarGameServlet/WarHtml.html\"> <input type=\"submit\" value=\"Return\"></a>");
 
-	}
+      }
+      else if(request.getParameter("K") != null){
+        String type =  request.getParameter("destroyerType");
 
-	private String destroyLauncher(String destroyerType, String destroyerId,
-			String launcherId) {
-		try {
-			int destroyer_id = Integer.parseInt(destroyerId);
-		} catch (Exception e) {
-			return "Wrong Data";
-		}
-		
-	 if (war.findDestroyerById(Integer.parseInt(destroyerId)) == null
-				|| war.findLauncherById(launcherId) == null){
-			return "Wrong Data";
+        out.println("<html>");
+     //   out.println("<form name=\"selectLaunchersPage\" action=\"/WarGameServlet/WarHtml.html\" method=\"GET\">");
+        out.println("<p>Select launcher to destroy: </p>");
+        for (Enemy_Launcher launcher : launchers){
+          out.println( "<p>" + launcher.getLauncherId() +"</p>");
+        }
+        out.println("<p>Select Destructor of type:</p>" + type );
+        for (Launcher_Destroyer destroyer : destroyers){
+          out.println("<p>" + destroyer.getLauncherId() + "</p>" );
+        }
+        out.println("<p>Select Missile to destroy: </p>");
+        for (Enemy_Missile missile : missiles){
+          out.println("<p>" + missile.getID()  + "</p>");
+        }
+        out.println("<p>Select Iron Dome to shoot from </p>");
+        for (Iron_Dome ironD : ironDomes){
+          out.println("<p>" + ironD.getDomeId() + "</p>");
+        }
+        out.println("<p><a href=\"/WarGameServlet/WarHtml.html\"> <input type=\"submit\" value=\"Return\"></a></p>");
+     //   out.println("</form>");
+        out.println("</html>");
+        enterOnce = true;
+      }
+      else if(request.getParameter("G") != null){
+        String launcheID =  request.getParameter("E");
+        String destructorID =  request.getParameter("F");
+        int id = Integer.parseInt(destructorID);
+        war.DestroyLauncher(5+"", launcheID, war.findDestroyerById(id));
+        out.append("<html> " +  destructorID + " Processing" + "</html>");
+        out.println("\n<a href=\"/WarGameServlet/WarHtml.html\"> <input type=\"submit\" value=\"Return\"></a>");
 
-		}
-		else{
-			war.DestroyLauncher("0", launcherId, war.findDestroyerById(Integer.parseInt(destroyerId)));
-			return "Destroyed";
-		}
-		
-	}
+      }
+      else if(request.getParameter("J") != null){
+        String missileID =  request.getParameter("H");
+        String domeID =  request.getParameter("I");
+        war.InterceptMissile(5+"", missileID, war.findIronDomeById(domeID));
+        out.append("<html> " +  domeID + " Processing" + "</html>");
+        out.println("\n<a href=\"/WarGameServlet/WarHtml.html\"> <input type=\"submit\" value=\"Return\"></a>");
 
-	public String interceptMissile(String ironDomeId, String missileId) {
-
-		if (war.findIronDomeById(ironDomeId) == null
-				|| war.findMissileById(missileId) == null) {
-			return "Wrong Data";
-		} else {
-			war.InterceptMissile("0", war.findMissileById(missileId).getID(),
-					war.findIronDomeById(ironDomeId));
-			return "Intercepted";
-		}
-
-		
-
-	}
-
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-
-	}
+      }
+ 
+    } finally {
+      out.close();
+    }
+  }
 }

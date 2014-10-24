@@ -3,6 +3,7 @@ package Missiles;
 import java.util.logging.Level;
 
 import launchers.Enemy_Launcher;
+import war.IdfControlServlet;
 import war.War;
 
 public class Enemy_Missile extends Thread {
@@ -98,7 +99,7 @@ public class Enemy_Missile extends Thread {
 			}
 			// if missile alive and launcher is alive
 			if (this.isAlive && enemy_Launcher.alive()) {
-				War.theLogger.log(Level.INFO, " Missile " + getID()
+			  War.theLogger.log(Level.INFO, " Missile " + getID()
 						+ " fired to " + getDestination() + " and will hit in "
 						+ getFlyTime() + "s", enemy_Launcher);
 				this.mode = Mode.Launched;
@@ -108,7 +109,7 @@ public class Enemy_Missile extends Thread {
 			} catch (InterruptedException e) {				
 			}
 			if (this.isAlive) {
-				War.theLogger.log(Level.INFO, " Missile " + getID() + " hit "
+			  War.theLogger.log(Level.INFO, " Missile " + getID() + " hit "
 						+ getDestination() + " for " + getDamage() + " damage",
 						enemy_Launcher);
 				// Setting the missile as "dead"

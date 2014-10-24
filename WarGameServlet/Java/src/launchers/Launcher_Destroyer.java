@@ -2,7 +2,10 @@ package launchers;
 
 import java.io.IOException;
 
+import javax.servlet.annotation.WebServlet;
+
 import Missiles.Destroyer_Missile;
+import war.IdfControlServlet;
 import war.War;
 import logger.Handler;
 
@@ -25,7 +28,7 @@ public class Launcher_Destroyer extends Thread {
 		// setting id for destroyer
 		this.id = runningId++;
 		try {
-			War.theLogger.addHandler((new Handler(type, id, this)));
+		  War.theLogger.addHandler((new Handler(type, id, this)));
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
